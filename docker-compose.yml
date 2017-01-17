@@ -3,7 +3,10 @@ version: '2'
 services:
 
   redmine:
-    image: redmine
+    build:
+      context: .
+      dockerfile: Dockerfile-redmine
+    image: myredmine
     ports:
       - 8080:3000
     environment:

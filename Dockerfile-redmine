@@ -1,0 +1,19 @@
+FROM redmine
+MAINTAINER Roman S <windj007@gmail.com>
+
+RUN apt-get update && \
+    apt-get install -yqq unzip && \
+    cd plugins && \
+    wget https://github.com/speedy32129/time_logger/archive/0.5.4.zip && \
+    unzip -o 0.5.4.zip && \
+    mv time_logger-0.5.4 time_logger && \
+    rm *.zip && \
+    cd ..
+
+RUN cd plugins && \
+    wget https://redmine.ociotec.com/attachments/download/440/scrum%20v0.16.2.tar.gz && \
+    tar xfv "scrum v0.16.2.tar.gz" && \
+    rm *.tar.gz && \
+    cd ..
+
+RUN sed -i 's/gosu redmine rake db:migrate/gosu redmine rake db:migrate \&\& gosu redmine rake redmine:plugins:migrate RAILS_ENV=production/' /docker-entrypoint.sh
